@@ -21,5 +21,19 @@ namespace Clock
         {
 
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            labelTime.Text = DateTime.Now.ToString("HH:mm:ss tt");
+            if (cbShowDate.Checked)
+            {
+                labelTime.Text += $"\n{DateTime.Today.ToString("yyyy.MM.dd")}";
+            }
+        }
+
+        private void cbShowDate_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
