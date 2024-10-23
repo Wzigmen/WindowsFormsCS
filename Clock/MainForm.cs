@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
+using System.Diagnostics;
 
 namespace Clock
 {
@@ -24,16 +25,16 @@ namespace Clock
 
         ColorDialog backgroundColorDialog;
         ColorDialog foregroundColorDialog;
-        RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+        RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true); // автозапуск приложения 
         ChooseFont chooseFontDialog;
         public MainForm()
         {
             InitializeComponent();
-            SetFontDirectory();
             backgroundColorDialog = new ColorDialog();
             foregroundColorDialog = new ColorDialog();
             //backgroundColorDialog.Color = Color.AliceBlue;
-            ApplySaves();
+            LoadSettings();
+            SetFontDirectory();
 
             chooseFontDialog = new ChooseFont();
 
@@ -46,23 +47,36 @@ namespace Clock
             SetVisibility(false);
             //reg.SetValue("My application", Application.ExecutablePath.ToString()); // автозапуск приложения 
 
+
             labelTime.MouseDown += MainForm_MouseDown;
             labelTime.MouseMove += MainForm_MouseMove;
             labelTime.MouseUp += MainForm_MouseUp;
 
         }
-        void ApplySaves ()
+        void LoadSettings ()
         {
-            string colorBack = File.ReadAllText(path);
-            backgroundColorDialog.Color = Color.FromName(colorBack);
-        }
-        void SaveSetings (ColorDialog back, ColorDialog fore)
-        {
-            StreamWriter fileStream = new StreamWriter(path);
-                       
-            fileStream.Write(back.Color.Name);
+            StreamReader sr = new StreamReader(path);
+            List<string> settings = new List<string>();
+            while(!sr.EndOfStream)
+            {
+                settings.Add(sr.ReadLine());
+            }
 
-            fileStream.Close();
+            backgroundColorDialog.Color = Color.FromArgb(Convert.ToInt32(settings.ToArray()[0]));
+            foregroundColorDialog.Color = Color.FromArgb(Convert.ToInt32(settings.ToArray()[1]));
+
+            labelTime.ForeColor = foregroundColorDialog.Color;
+            labelTime.BackColor = backgroundColorDialog.Color;
+            sr.Close();
+        }
+        void SaveSettings ()
+        {
+            StreamWriter sw = new StreamWriter(path);
+            sw.WriteLine(backgroundColorDialog.Color.ToArgb());
+            sw.WriteLine(foregroundColorDialog.Color.ToArgb());
+            sw.WriteLine(labelTime.Font.Name);
+            sw.Close();
+            //Process.Start("notepad", path); // открывает файл для просмотра 
         }
         void SetFontDirectory()
         {
@@ -160,7 +174,6 @@ namespace Clock
             {
                 labelTime.BackColor = backgroundColorDialog.Color;
             }
-            SaveSetings(backgroundColorDialog, foregroundColorDialog);
         }
 
         private void loadOnWindowStartupToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
@@ -215,6 +228,11 @@ namespace Clock
             {
                 isDragging = false;
             }
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveSettings();
         }
     }
 }
