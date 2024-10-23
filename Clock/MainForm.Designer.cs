@@ -38,6 +38,8 @@
             this.showDateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.colorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.backgroundColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fontsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.loadOnWindowStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,8 +49,7 @@
             this.cbShowDate = new System.Windows.Forms.CheckBox();
             this.btnHideControls = new System.Windows.Forms.Button();
             this.notifyIconSystemTray = new System.Windows.Forms.NotifyIcon(this.components);
-            this.fToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.backgroundColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fontDialog = new System.Windows.Forms.FontDialog();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,6 +67,7 @@
             this.labelTime.Text = "Time";
             this.labelTime.Click += new System.EventHandler(this.label1_Click);
             this.labelTime.DoubleClick += new System.EventHandler(this.labelTime_DoubleClick);
+            this.labelTime.MouseCaptureChanged += new System.EventHandler(this.labelTime_MouseCaptureChanged);
             // 
             // contextMenuStrip
             // 
@@ -82,7 +84,7 @@
             this.toolStripSeparator3,
             this.closeToolStripMenuItem});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(205, 204);
+            this.contextMenuStrip.Size = new System.Drawing.Size(205, 182);
             // 
             // topmostToolStripMenuItem
             // 
@@ -127,11 +129,26 @@
             this.colorsToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.colorsToolStripMenuItem.Text = "Colors";
             // 
+            // fToolStripMenuItem
+            // 
+            this.fToolStripMenuItem.Name = "fToolStripMenuItem";
+            this.fToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.fToolStripMenuItem.Text = "Foreground color";
+            this.fToolStripMenuItem.Click += new System.EventHandler(this.fToolStripMenuItem_Click);
+            // 
+            // backgroundColorToolStripMenuItem
+            // 
+            this.backgroundColorToolStripMenuItem.Name = "backgroundColorToolStripMenuItem";
+            this.backgroundColorToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.backgroundColorToolStripMenuItem.Text = "Background color";
+            this.backgroundColorToolStripMenuItem.Click += new System.EventHandler(this.backgroundColorToolStripMenuItem_Click);
+            // 
             // fontsToolStripMenuItem
             // 
             this.fontsToolStripMenuItem.Name = "fontsToolStripMenuItem";
             this.fontsToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.fontsToolStripMenuItem.Text = "Fonts";
+            this.fontsToolStripMenuItem.Click += new System.EventHandler(this.fontsToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -140,9 +157,12 @@
             // 
             // loadOnWindowStartupToolStripMenuItem
             // 
+            this.loadOnWindowStartupToolStripMenuItem.CheckOnClick = true;
             this.loadOnWindowStartupToolStripMenuItem.Name = "loadOnWindowStartupToolStripMenuItem";
             this.loadOnWindowStartupToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.loadOnWindowStartupToolStripMenuItem.Text = "Load on Window startup";
+            this.loadOnWindowStartupToolStripMenuItem.CheckedChanged += new System.EventHandler(this.loadOnWindowStartupToolStripMenuItem_CheckedChanged);
+            this.loadOnWindowStartupToolStripMenuItem.Click += new System.EventHandler(this.loadOnWindowStartupToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -201,26 +221,13 @@
             this.notifyIconSystemTray.DoubleClick += new System.EventHandler(this.notifyIconSystemTray_DoubleClick);
             this.notifyIconSystemTray.MouseMove += new System.Windows.Forms.MouseEventHandler(this.notifyIconSystemTray_MouseMove);
             // 
-            // fToolStripMenuItem
-            // 
-            this.fToolStripMenuItem.Name = "fToolStripMenuItem";
-            this.fToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.fToolStripMenuItem.Text = "Foreground color";
-            this.fToolStripMenuItem.Click += new System.EventHandler(this.fToolStripMenuItem_Click);
-            // 
-            // backgroundColorToolStripMenuItem
-            // 
-            this.backgroundColorToolStripMenuItem.Name = "backgroundColorToolStripMenuItem";
-            this.backgroundColorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.backgroundColorToolStripMenuItem.Text = "Background color";
-            this.backgroundColorToolStripMenuItem.Click += new System.EventHandler(this.backgroundColorToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImage = global::Clock.Properties.Resources.Chasiki1;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(316, 342);
             this.Controls.Add(this.btnHideControls);
             this.Controls.Add(this.cbShowDate);
@@ -231,6 +238,9 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Clock";
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseUp);
             this.contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -258,6 +268,7 @@
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem backgroundColorToolStripMenuItem;
+        private System.Windows.Forms.FontDialog fontDialog;
     }
 }
 

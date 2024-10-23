@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
+using System.Reflection;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,20 +11,32 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Clock
 {
     public partial class MainForm : Form
     {
+        private bool isDragging = false; // Флаг, показывающий, происходит ли перетаскивание
+        private Point startPoint;
+
+        static string path = "C:\\Users\\golub\\source\\repos\\WindowsForms\\Clock\\Save.txt";
+
         ColorDialog backgroundColorDialog;
         ColorDialog foregroundColorDialog;
+        RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+        ChooseFont chooseFontDialog;
         public MainForm()
         {
             InitializeComponent();
-            this.TransparencyKey = Color.Empty;
+            SetFontDirectory();
             backgroundColorDialog = new ColorDialog();
             foregroundColorDialog = new ColorDialog();
-            backgroundColorDialog.Color = Color.Red;
+            //backgroundColorDialog.Color = Color.AliceBlue;
+            ApplySaves();
+
+            chooseFontDialog = new ChooseFont();
+
             this.Location = new Point
                 (
                     System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - this.Width,
@@ -29,8 +44,34 @@ namespace Clock
                 );  
             this.Text += $"Location : {this.Location.X} x {this.Location.Y}";
             SetVisibility(false);
-        }
+            //reg.SetValue("My application", Application.ExecutablePath.ToString()); // автозапуск приложения 
 
+            labelTime.MouseDown += MainForm_MouseDown;
+            labelTime.MouseMove += MainForm_MouseMove;
+            labelTime.MouseUp += MainForm_MouseUp;
+
+        }
+        void ApplySaves ()
+        {
+            string colorBack = File.ReadAllText(path);
+            backgroundColorDialog.Color = Color.FromName(colorBack);
+        }
+        void SaveSetings (ColorDialog back, ColorDialog fore)
+        {
+            StreamWriter fileStream = new StreamWriter(path);
+                       
+            fileStream.Write(back.Color.Name);
+
+            fileStream.Close();
+        }
+        void SetFontDirectory()
+        {
+            string location = Assembly.GetExecutingAssembly().Location; // Получаем полный адрес исполняемого файла
+            string path = Path.GetDirectoryName(location);            // Из адреса извлекаем пусть к файлу
+            //MessageBox.Show(Directory.GetCurrentDirectory());
+            Directory.SetCurrentDirectory($"{path}\\..\\..\\Fonts");    // Переходим в каталог со шрифтами
+            //MessageBox.Show(Directory.GetCurrentDirectory());
+        }
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -118,6 +159,61 @@ namespace Clock
             if (backgroundColorDialog.ShowDialog(this) == DialogResult.OK)
             {
                 labelTime.BackColor = backgroundColorDialog.Color;
+            }
+            SaveSetings(backgroundColorDialog, foregroundColorDialog);
+        }
+
+        private void loadOnWindowStartupToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            //if (loadOnWindowStartupToolStripMenuItem.Checked == true)
+            //    reg.SetValue("My application", Application.ExecutablePath.ToString());
+            //else 
+            //    reg.Close();
+        }
+
+        private void loadOnWindowStartupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            loadOnWindowStartupToolStripMenuItem.Checked = ((CheckBox)sender).Checked;
+        }
+
+        private void fontsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(chooseFontDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                labelTime.Font = chooseFontDialog.ChoseFont;
+            }
+        }
+
+        private void labelTime_MouseCaptureChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MainForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = true;
+                startPoint = new Point(e.X, e.Y);
+            }
+        }
+
+        private void MainForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                int newX = Location.X + (e.X - startPoint.X);
+                int newY = Location.Y + (e.Y - startPoint.Y);
+
+                Location = new Point(newX, newY);
+            }
+        }
+
+        private void MainForm_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = false;
             }
         }
     }
