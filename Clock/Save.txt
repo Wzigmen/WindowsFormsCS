@@ -1,3 +1,5 @@
--32513
--16777216
-Franklin Gothic Medium
+-8388353
+-65536
+ofont.ru_Wayward.ttf
+True
+False

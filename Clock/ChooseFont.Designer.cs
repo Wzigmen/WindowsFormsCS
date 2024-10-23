@@ -51,9 +51,9 @@
             this.labelExample.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelExample.Location = new System.Drawing.Point(12, 68);
             this.labelExample.Name = "labelExample";
-            this.labelExample.Size = new System.Drawing.Size(152, 55);
+            this.labelExample.Size = new System.Drawing.Size(296, 55);
             this.labelExample.TabIndex = 1;
-            this.labelExample.Text = "label1";
+            this.labelExample.Text = "Chivapchichi";
             // 
             // comboBoxFonts
             // 

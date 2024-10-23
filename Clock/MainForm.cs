@@ -27,16 +27,18 @@ namespace Clock
         ColorDialog foregroundColorDialog;
         RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true); // автозапуск приложения 
         ChooseFont chooseFontDialog;
+
+        static string FontFile {  get; set; }
         public MainForm()
         {
             InitializeComponent();
+            SetFontDirectory();
             backgroundColorDialog = new ColorDialog();
             foregroundColorDialog = new ColorDialog();
             //backgroundColorDialog.Color = Color.AliceBlue;
-            LoadSettings();
-            SetFontDirectory();
 
             chooseFontDialog = new ChooseFont();
+            LoadSettings();
 
             this.Location = new Point
                 (
@@ -56,27 +58,41 @@ namespace Clock
         void LoadSettings ()
         {
             StreamReader sr = new StreamReader(path);
-            List<string> settings = new List<string>();
-            while(!sr.EndOfStream)
+            try
             {
-                settings.Add(sr.ReadLine());
+                List<string> settings = new List<string>();
+                while (!sr.EndOfStream)
+                {
+                    settings.Add(sr.ReadLine());
+                }
+
+                backgroundColorDialog.Color = Color.FromArgb(Convert.ToInt32(settings.ToArray()[0]));
+                foregroundColorDialog.Color = Color.FromArgb(Convert.ToInt32(settings.ToArray()[1]));
+                FontFile = settings.ToArray()[2];
+
+                topmostToolStripMenuItem.Checked = bool.Parse(settings.ToArray()[3]);
+                showDateToolStripMenuItem.Checked = bool.Parse(settings.ToArray()[4]);
+                labelTime.Font = chooseFontDialog.SetFontFile(FontFile);
+                labelTime.ForeColor = foregroundColorDialog.Color;
+                labelTime.BackColor = backgroundColorDialog.Color;
+                sr.Close();
             }
-
-            backgroundColorDialog.Color = Color.FromArgb(Convert.ToInt32(settings.ToArray()[0]));
-            foregroundColorDialog.Color = Color.FromArgb(Convert.ToInt32(settings.ToArray()[1]));
-
-            labelTime.ForeColor = foregroundColorDialog.Color;
-            labelTime.BackColor = backgroundColorDialog.Color;
-            sr.Close();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Load", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                sr.Close();
+            }
         }
         void SaveSettings ()
         {
             StreamWriter sw = new StreamWriter(path);
             sw.WriteLine(backgroundColorDialog.Color.ToArgb());
             sw.WriteLine(foregroundColorDialog.Color.ToArgb());
-            sw.WriteLine(labelTime.Font.Name);
+            sw.WriteLine(chooseFontDialog.FontFile.Split('\\').Last());
+            sw.WriteLine(topmostToolStripMenuItem.Checked);
+            sw.WriteLine(showDateToolStripMenuItem.Checked);
             sw.Close();
-            //Process.Start("notepad", path); // открывает файл для просмотра 
+            Process.Start("notepad", path); // открывает файл для просмотра 
         }
         void SetFontDirectory()
         {
