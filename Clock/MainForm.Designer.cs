@@ -60,7 +60,7 @@
             this.labelTime.BackColor = System.Drawing.Color.Transparent;
             this.labelTime.ContextMenuStrip = this.contextMenuStrip;
             this.labelTime.Font = new System.Drawing.Font("Franklin Gothic Medium", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelTime.Location = new System.Drawing.Point(12, 9);
+            this.labelTime.Location = new System.Drawing.Point(6, 4);
             this.labelTime.Name = "labelTime";
             this.labelTime.Size = new System.Drawing.Size(92, 41);
             this.labelTime.TabIndex = 0;
@@ -228,7 +228,7 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImage = global::Clock.Properties.Resources.Chasiki1;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(316, 342);
+            this.ClientSize = new System.Drawing.Size(304, 332);
             this.Controls.Add(this.btnHideControls);
             this.Controls.Add(this.cbShowDate);
             this.Controls.Add(this.labelTime);

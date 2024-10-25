@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
 using System.Diagnostics;
+//using System.Reflection;
+using Microsoft.Win32;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Clock
 {
@@ -25,7 +28,6 @@ namespace Clock
 
         ColorDialog backgroundColorDialog;
         ColorDialog foregroundColorDialog;
-        RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true); // автозапуск приложения 
         ChooseFont chooseFontDialog;
 
         static string FontFile {  get; set; }
@@ -53,6 +55,11 @@ namespace Clock
             labelTime.MouseDown += MainForm_MouseDown;
             labelTime.MouseMove += MainForm_MouseMove;
             labelTime.MouseUp += MainForm_MouseUp;
+
+            RegistryKey rk = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
+            Object run = rk.GetValue("Clock318");
+            if (run != null) loadOnWindowStartupToolStripMenuItem.Checked = true;
+            rk.Dispose();
 
         }
         void LoadSettings ()
@@ -92,7 +99,7 @@ namespace Clock
             sw.WriteLine(topmostToolStripMenuItem.Checked);
             sw.WriteLine(showDateToolStripMenuItem.Checked);
             sw.Close();
-            Process.Start("notepad", path); // открывает файл для просмотра 
+            //Process.Start("notepad", path); // открывает файл для просмотра 
         }
         void SetFontDirectory()
         {
@@ -194,15 +201,16 @@ namespace Clock
 
         private void loadOnWindowStartupToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
-            //if (loadOnWindowStartupToolStripMenuItem.Checked == true)
-            //    reg.SetValue("My application", Application.ExecutablePath.ToString());
-            //else 
-            //    reg.Close();
+            RegistryKey rk = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
+            if (loadOnWindowStartupToolStripMenuItem.Checked)
+                rk.SetValue("Clock318", System.Windows.Forms.Application.ExecutablePath);
+            else rk.DeleteValue("Clock318", false);
+            rk.Dispose();
         }
 
         private void loadOnWindowStartupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            loadOnWindowStartupToolStripMenuItem.Checked = ((CheckBox)sender).Checked;
+            //loadOnWindowStartupToolStripMenuItem.Checked = ((CheckBox)sender).Checked;
         }
 
         private void fontsToolStripMenuItem_Click(object sender, EventArgs e)
