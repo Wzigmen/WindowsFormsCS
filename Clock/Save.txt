@@ -1,5 +1,5 @@
+-32768
 -8388353
--65536
 ofont.ru_Wayward.ttf
 True
 False

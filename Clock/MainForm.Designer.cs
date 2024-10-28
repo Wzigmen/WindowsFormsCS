@@ -41,9 +41,11 @@
             this.fToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.backgroundColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fontsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.alarmsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.loadOnWindowStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.cbShowDate = new System.Windows.Forms.CheckBox();
@@ -65,7 +67,6 @@
             this.labelTime.Size = new System.Drawing.Size(92, 41);
             this.labelTime.TabIndex = 0;
             this.labelTime.Text = "Time";
-            this.labelTime.Click += new System.EventHandler(this.label1_Click);
             this.labelTime.DoubleClick += new System.EventHandler(this.labelTime_DoubleClick);
             this.labelTime.MouseCaptureChanged += new System.EventHandler(this.labelTime_MouseCaptureChanged);
             // 
@@ -79,12 +80,14 @@
             this.toolStripSeparator4,
             this.colorsToolStripMenuItem,
             this.fontsToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.alarmsToolStripMenuItem,
             this.toolStripSeparator2,
             this.loadOnWindowStartupToolStripMenuItem,
-            this.toolStripSeparator3,
+            this.toolStripSeparator5,
             this.closeToolStripMenuItem});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(205, 182);
+            this.contextMenuStrip.Size = new System.Drawing.Size(205, 210);
             // 
             // topmostToolStripMenuItem
             // 
@@ -150,6 +153,18 @@
             this.fontsToolStripMenuItem.Text = "Fonts";
             this.fontsToolStripMenuItem.Click += new System.EventHandler(this.fontsToolStripMenuItem_Click);
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(201, 6);
+            // 
+            // alarmsToolStripMenuItem
+            // 
+            this.alarmsToolStripMenuItem.Name = "alarmsToolStripMenuItem";
+            this.alarmsToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.alarmsToolStripMenuItem.Text = "Alarms";
+            this.alarmsToolStripMenuItem.Click += new System.EventHandler(this.alarmsToolStripMenuItem_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
@@ -164,10 +179,10 @@
             this.loadOnWindowStartupToolStripMenuItem.CheckedChanged += new System.EventHandler(this.loadOnWindowStartupToolStripMenuItem_CheckedChanged);
             this.loadOnWindowStartupToolStripMenuItem.Click += new System.EventHandler(this.loadOnWindowStartupToolStripMenuItem_Click);
             // 
-            // toolStripSeparator3
+            // toolStripSeparator5
             // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(201, 6);
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(201, 6);
             // 
             // closeToolStripMenuItem
             // 
@@ -270,6 +285,8 @@
         private System.Windows.Forms.ToolStripMenuItem fToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem backgroundColorToolStripMenuItem;
         private System.Windows.Forms.FontDialog fontDialog;
+        private System.Windows.Forms.ToolStripMenuItem alarmsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
     }
 }
 

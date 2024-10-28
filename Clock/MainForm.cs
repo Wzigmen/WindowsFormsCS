@@ -16,6 +16,7 @@ using System.Diagnostics;
 //using System.Reflection;
 using Microsoft.Win32;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Runtime.InteropServices;
 
 namespace Clock
 {
@@ -29,11 +30,13 @@ namespace Clock
         ColorDialog backgroundColorDialog;
         ColorDialog foregroundColorDialog;
         ChooseFont chooseFontDialog;
+        AlarmList alarmList;
 
         static string FontFile {  get; set; }
         public MainForm()
         {
             InitializeComponent();
+            AllocConsole();
             SetFontDirectory();
             backgroundColorDialog = new ColorDialog();
             foregroundColorDialog = new ColorDialog();
@@ -41,6 +44,7 @@ namespace Clock
 
             chooseFontDialog = new ChooseFont();
             LoadSettings();
+            alarmList = new AlarmList();
 
             this.Location = new Point
                 (
@@ -108,10 +112,6 @@ namespace Clock
             //MessageBox.Show(Directory.GetCurrentDirectory());
             Directory.SetCurrentDirectory($"{path}\\..\\..\\Fonts");    // Переходим в каталог со шрифтами
             //MessageBox.Show(Directory.GetCurrentDirectory());
-        }
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -258,5 +258,12 @@ namespace Clock
         {
             SaveSettings();
         }
+
+        private void alarmsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            alarmList.ShowDialog(this);
+        }
+        [DllImport("kernel32.dll")]
+        static extern bool AllocConsole();
     }
 }
