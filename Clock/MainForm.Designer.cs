@@ -57,7 +57,6 @@
             // 
             // labelTime
             // 
-            this.labelTime.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelTime.AutoSize = true;
             this.labelTime.BackColor = System.Drawing.Color.Transparent;
             this.labelTime.ContextMenuStrip = this.contextMenuStrip;
@@ -242,14 +241,15 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImage = global::Clock.Properties.Resources.Chasiki1;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(304, 332);
             this.Controls.Add(this.btnHideControls);
             this.Controls.Add(this.cbShowDate);
             this.Controls.Add(this.labelTime);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Clock";

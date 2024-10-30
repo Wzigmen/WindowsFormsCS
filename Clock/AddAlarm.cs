@@ -21,12 +21,31 @@ namespace Clock
             //labelFileName.SetBounds(labelFileName.Location.X, labelFileName.Location.Y, this.Width - 10, 25);
             labelFileName.MaximumSize = new Size(this.Width - 25, 75);
             openFileDialogSound.Filter = "MP-3 (*.mp3)|*.mp3|Flac (*.flac)|*.flac|All Audio|*.mp3;*.flac";
+            openFileDialogSound.FilterIndex = 3;
+        }
+        public AddAlarm(Alarm alarm) : this()
+        {
+            Alarm = alarm;
+            InitWindowFromAlarm();
+        }
+        void InitWindowFromAlarm()
+        {
+            if(Alarm.Date != DateTime.MinValue)this.dateTimePickerDate.Value = Alarm.Date;
+            this.dateTimePickerTime.Value = Alarm.Time;
+            this.labelFileName.Text = Alarm.FileName;
+            for (int i = 0; i < Alarm.WeekDays.Length; i++)
+            {
+                //(checkedListBoxWeek.Items[i] as CheckBox).Checked = Alarm.WeekDays[i];
+                checkedListBoxWeek.SetItemChecked(i, Alarm.WeekDays[i]);
+            }
         }
         void AlarmInit()
         {
             Alarm.Date = dateTimePickerDate.Enabled ? dateTimePickerDate.Value : DateTime.MinValue;
             Alarm.Time = dateTimePickerTime.Value;
             Alarm.FileName = labelFileName.Text;
+            for (int i = 0; i < Alarm.WeekDays.Length; i++) Alarm.WeekDays[i] = false;
+            
             for (int i = 0; i < checkedListBoxWeek.CheckedIndices.Count; i++)
             {
                 // Cвойство CheckedIndices - это коллекция которая содержит индексы выбранных галочек в checkedListBox
@@ -68,6 +87,19 @@ namespace Clock
                 Alarm.FileName = labelFileName.Text = openFileDialogSound.FileName;
                 
             }
+        }
+
+        private void AddAlarm_Load(object sender, EventArgs e)
+        {
+            //dateTimePickerDate.Value = Alarm.Date;
+            //dateTimePickerTime.Value = Alarm.Time;
+            //checkedListBoxWeek.Text = Alarm.WeekDayNames[7];
+            //for (int i = 0; i < checkedListBoxWeek.CheckedIndices.Count; i++)
+            //{
+            //    checkedListBoxWeek.Text = Alarm.WeekDays[i];
+            //}
+
+            //labelFileName.Text = Alarm.FileName;
         }
     }
 }

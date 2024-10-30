@@ -130,7 +130,7 @@ namespace Clock
             this.ShowInTaskbar = visible;
             cbShowDate.Visible = visible;
             btnHideControls.Visible = visible;
-            labelTime.BackColor = visible ? Color.Transparent : backgroundColorDialog.Color;
+            labelTime.BackColor = visible ? backgroundColorDialog.Color : backgroundColorDialog.Color;
             BackgroundImage = visible ? Clock.Properties.Resources.Chasiki1 : null;
         }
         private void btnHideControls_Click(object sender, EventArgs e)

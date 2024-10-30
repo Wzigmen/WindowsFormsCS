@@ -41,16 +41,22 @@
             // 
             // dateTimePickerDate
             // 
+            this.dateTimePickerDate.CalendarForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dateTimePickerDate.CalendarMonthBackground = System.Drawing.SystemColors.HotTrack;
+            this.dateTimePickerDate.CalendarTitleForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dateTimePickerDate.CalendarTrailingForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.dateTimePickerDate.Enabled = false;
             this.dateTimePickerDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.dateTimePickerDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dateTimePickerDate.Location = new System.Drawing.Point(12, 40);
             this.dateTimePickerDate.Name = "dateTimePickerDate";
+            this.dateTimePickerDate.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.dateTimePickerDate.Size = new System.Drawing.Size(139, 35);
             this.dateTimePickerDate.TabIndex = 0;
             // 
             // checkedListBoxWeek
             // 
+            this.checkedListBoxWeek.BackColor = System.Drawing.Color.CornflowerBlue;
             this.checkedListBoxWeek.CheckOnClick = true;
             this.checkedListBoxWeek.ColumnWidth = 55;
             this.checkedListBoxWeek.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -115,6 +121,11 @@
             // 
             // dateTimePickerTime
             // 
+            this.dateTimePickerTime.CalendarForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dateTimePickerTime.CalendarMonthBackground = System.Drawing.SystemColors.HotTrack;
+            this.dateTimePickerTime.CalendarTitleBackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.dateTimePickerTime.CalendarTitleForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dateTimePickerTime.CalendarTrailingForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.dateTimePickerTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.dateTimePickerTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.dateTimePickerTime.Location = new System.Drawing.Point(275, 40);
@@ -143,7 +154,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.BackgroundImage = global::Clock.Properties.Resources.фон_атом_часы;
             this.ClientSize = new System.Drawing.Size(423, 180);
             this.Controls.Add(this.checkBoxExactDate);
             this.Controls.Add(this.dateTimePickerTime);
@@ -153,11 +165,13 @@
             this.Controls.Add(this.labelFileName);
             this.Controls.Add(this.checkedListBoxWeek);
             this.Controls.Add(this.dateTimePickerDate);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddAlarm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AddAlarm";
+            this.Load += new System.EventHandler(this.AddAlarm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

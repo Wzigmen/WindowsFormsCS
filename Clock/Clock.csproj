@@ -157,6 +157,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\фон_атом_часы.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Chasiki2.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
