@@ -31,8 +31,8 @@ namespace Clock
         ColorDialog foregroundColorDialog;
         ChooseFont chooseFontDialog;
         AlarmList alarmList;
-
-        static string FontFile {  get; set; }
+        Alarm alarm;
+        static string FontFile { get; set; }
         public MainForm()
         {
             InitializeComponent();
@@ -46,6 +46,7 @@ namespace Clock
             LoadSettings();
             alarmList = new AlarmList();
 
+            alarm = new Alarm();
             this.Location = new Point
                 (
                     System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - this.Width,
@@ -105,6 +106,16 @@ namespace Clock
             sw.Close();
             //Process.Start("notepad", path); // открывает файл для просмотра 
         }
+        void GetNextAlarm()
+        {
+            List<Alarm> alarms = new List<Alarm>();
+            foreach (Alarm alarm in alarmList.ListBoxAlarms.Items)
+            {
+                alarms.Add(alarm);
+            }
+            if(alarms.Min() != null) alarm = alarms.Min();
+            Console.WriteLine(alarm);          
+        }
         void SetFontDirectory()
         {
             string location = Assembly.GetExecutingAssembly().Location; // Получаем полный адрес исполняемого файла
@@ -122,6 +133,15 @@ namespace Clock
                 labelTime.Text += $"\n{DateTime.Today.ToString("yyyy.MM.dd")}";
             }
             //notifyIconSystemTray.Text = "Curret time " + labelTime.Text;
+            GetNextAlarm();
+            if(
+                DateTime.Now.Hour == alarm.Time.Hour && 
+                DateTime.Now.Minute == alarm.Time.Minute && 
+                DateTime.Now.Second == alarm.Time.Second
+                )
+            {
+                MessageBox.Show(alarm.FileName, "Alarm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
         private void SetVisibility(bool visible)
         {
