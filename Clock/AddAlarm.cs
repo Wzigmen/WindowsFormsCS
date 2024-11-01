@@ -22,6 +22,10 @@ namespace Clock
             labelFileName.MaximumSize = new Size(this.Width - 25, 75);
             openFileDialogSound.Filter = "MP-3 (*.mp3)|*.mp3|Flac (*.flac)|*.flac|All Audio|*.mp3;*.flac";
             openFileDialogSound.FilterIndex = 3;
+            for (int i = 0; i < checkedListBoxWeek.Items.Count; i++)
+            {
+                checkedListBoxWeek.SetItemChecked(i, true);
+            }
         }
         public AddAlarm(Alarm alarm) : this()
         {
@@ -38,6 +42,7 @@ namespace Clock
                 //(checkedListBoxWeek.Items[i] as CheckBox).Checked = Alarm.WeekDays[i];
                 checkedListBoxWeek.SetItemChecked(i, Alarm.WeekDays[i]);
             }
+
         }
         void AlarmInit()
         {

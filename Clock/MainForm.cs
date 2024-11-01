@@ -111,9 +111,15 @@ namespace Clock
             List<Alarm> alarms = new List<Alarm>();
             foreach (Alarm alarm in alarmList.ListBoxAlarms.Items)
             {
-                alarms.Add(alarm);
+                if(alarm.Time > DateTime.Now) alarms.Add(alarm);
             }
-            if(alarms.Min() != null) alarm = alarms.Min();
+            if (alarms.Min() != null) alarm = alarms.Min();
+            //List<TimeSpan> intervals = new List<TimeSpan>(); // TimeSpan - это
+            //foreach (Alarm item in alarmList.ListBoxAlarms.Items)
+            //{
+            //    TimeSpan min = new TimeSpan(24,0,0);
+            //    if (DateTime.Now - item.Time < min) alarm = item;   
+            //}
             Console.WriteLine(alarm);          
         }
         void SetFontDirectory()
@@ -132,9 +138,13 @@ namespace Clock
             {
                 labelTime.Text += $"\n{DateTime.Today.ToString("yyyy.MM.dd")}";
             }
+            if(showWeekdayToolStripMenuItem.Checked)
+            {
+                labelTime.Text += $"\n{DateTime.Now.DayOfWeek}";
+            }
             //notifyIconSystemTray.Text = "Curret time " + labelTime.Text;
-            GetNextAlarm();
-            if(
+            if (
+                alarm.WeekDays[(int)DateTime.Now.DayOfWeek == 0 ? 6 : (int)DateTime.Now.DayOfWeek - 1] == true && 
                 DateTime.Now.Hour == alarm.Time.Hour && 
                 DateTime.Now.Minute == alarm.Time.Minute && 
                 DateTime.Now.Second == alarm.Time.Second
@@ -142,6 +152,7 @@ namespace Clock
             {
                 MessageBox.Show(alarm.FileName, "Alarm", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            GetNextAlarm();
         }
         private void SetVisibility(bool visible)
         {
