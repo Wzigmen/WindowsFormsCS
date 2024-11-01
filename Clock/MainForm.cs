@@ -55,7 +55,9 @@ namespace Clock
             this.Text += $"Location : {this.Location.X} x {this.Location.Y}";
             SetVisibility(false);
             //reg.SetValue("My application", Application.ExecutablePath.ToString()); // автозапуск приложения 
+            GetNextAlarm();
 
+            //this.axWindowsMediaPlayer1.Visible = false;
 
             labelTime.MouseDown += MainForm_MouseDown;
             labelTime.MouseMove += MainForm_MouseMove;
@@ -150,9 +152,22 @@ namespace Clock
                 DateTime.Now.Second == alarm.Time.Second
                 )
             {
-                MessageBox.Show(alarm.FileName, "Alarm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //MessageBox.Show(alarm.FileName, "Alarm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                PlayAlarm();
+                GetNextAlarm();
             }
-            GetNextAlarm();
+            if(DateTime.Now.Second == 0)
+            {
+                GetNextAlarm();
+                Console.WriteLine("Minute");
+            }
+        }
+        void PlayAlarm()
+        {
+            axWindowsMediaPlayer.URL = alarm.FileName;
+            axWindowsMediaPlayer.settings.volume = 100;
+            axWindowsMediaPlayer.Ctlcontrols.play();
+            axWindowsMediaPlayer.Visible = true;
         }
         private void SetVisibility(bool visible)
         {
@@ -163,6 +178,7 @@ namespace Clock
             btnHideControls.Visible = visible;
             labelTime.BackColor = visible ? backgroundColorDialog.Color : backgroundColorDialog.Color;
             BackgroundImage = visible ? Clock.Properties.Resources.Chasiki1 : null;
+            axWindowsMediaPlayer.Visible = false;
         }
         private void btnHideControls_Click(object sender, EventArgs e)
         {
@@ -293,6 +309,7 @@ namespace Clock
         private void alarmsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             alarmList.ShowDialog(this);
+            GetNextAlarm();
         }
         [DllImport("kernel32.dll")]
         static extern bool AllocConsole();
