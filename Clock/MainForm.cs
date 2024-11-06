@@ -17,6 +17,8 @@ using System.Diagnostics;
 using Microsoft.Win32;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Runtime.InteropServices;
+using AxWMPLib;
+using WMPLib;
 
 namespace Clock
 {
@@ -146,6 +148,7 @@ namespace Clock
             }
             //notifyIconSystemTray.Text = "Curret time " + labelTime.Text;
             if (
+                alarm != null &&
                 alarm.WeekDays[(int)DateTime.Now.DayOfWeek == 0 ? 6 : (int)DateTime.Now.DayOfWeek - 1] == true && 
                 DateTime.Now.Hour == alarm.Time.Hour && 
                 DateTime.Now.Minute == alarm.Time.Minute && 
@@ -304,6 +307,7 @@ namespace Clock
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             SaveSettings();
+            alarmList.SaveAlarmsToFile("alarms.csv");
         }
 
         private void alarmsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -311,7 +315,20 @@ namespace Clock
             alarmList.ShowDialog(this);
             GetNextAlarm();
         }
+        void SetPlaerInvisible(object sender, AxWMPLib._WMPOCXEvents_EndOfStreamEvent e)
+        {
+            axWindowsMediaPlayer.Visible = false;
+        }
         [DllImport("kernel32.dll")]
         static extern bool AllocConsole();
+
+        private void axWindowsMediaPlayer_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e)
+        {
+            if (e.newState == (int)WMPLib.WMPPlayState.wmppsMediaEnded)
+            {
+                // Скрываем после окончания воспроизведения
+                axWindowsMediaPlayer.Visible = false;
+            }
+        }
     }
 }
