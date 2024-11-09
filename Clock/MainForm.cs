@@ -115,7 +115,7 @@ namespace Clock
             List<Alarm> alarms = new List<Alarm>();
             foreach (Alarm alarm in alarmList.ListBoxAlarms.Items)
             {
-                if(alarm.Time > DateTime.Now) alarms.Add(alarm);
+                if(alarm.Time.TimeOfDay > DateTime.Now.TimeOfDay) alarms.Add(alarm);
             }
             if (alarms.Min() != null) alarm = alarms.Min();
             //List<TimeSpan> intervals = new List<TimeSpan>(); // TimeSpan - это
@@ -167,10 +167,39 @@ namespace Clock
         }
         void PlayAlarm()
         {
-            axWindowsMediaPlayer.URL = alarm.FileName;
+            //try
+            //{
+            //string filename = File.Exists(alarm.FileName) ? alarm.FileName : DEFAULT_ALARM_FILENAME;
+
+            //axWindowsMediaPlayer.URL = File.Exists(alarm.FileName) ? alarm.FileName : "..\\Sound\\AaaaAAaAAaaAAaa.mp3";
+            string MusicPath = Path.GetFullPath("..\\Sound\\AaaaAAaAAaaAAaa.mp3"); //Используйте Path.GetFullPath() для преобразования относительного пути в абсолютный
+            //string defaultMusicPath = Path.Combine(System.Windows.Forms.Application.StartupPath, "Sound", "AaaaAAaAAaaAAaa.mp3"); // "Music" - папка с музыкой
+            if (File.Exists(MusicPath))
+            {
+                axWindowsMediaPlayer.URL = File.Exists(alarm.FileName) ? alarm.FileName : MusicPath;
+            }
+            else
+            {
+                MessageBox.Show("Файл дефолтной музыки не найден!");
+            }
+            //if(!File.Exists(alarm.FileName))
+            //{
+            //    Console.WriteLine("Error");
+            //    axWindowsMediaPlayer.URL = "..\\Sound\\AaaaAAaAAaaAAaa.mp3";
+            //}
             axWindowsMediaPlayer.settings.volume = 100;
-            axWindowsMediaPlayer.Ctlcontrols.play();
             axWindowsMediaPlayer.Visible = true;
+            axWindowsMediaPlayer.Ctlcontrols.play();
+            Console.WriteLine($"PlayAlarm:\t {Directory.GetCurrentDirectory()}");
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message, "Alarm file not found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    axWindowsMediaPlayer.URL = alarm.FileName = "Sound\\AaaaAAaAAaaAAaa.mp3";
+            //    axWindowsMediaPlayer.settings.volume = 100;
+            //    axWindowsMediaPlayer.Visible = true;
+            //    axWindowsMediaPlayer.Ctlcontrols.play();
+            //}
         }
         private void SetVisibility(bool visible)
         {
@@ -315,9 +344,14 @@ namespace Clock
             alarmList.ShowDialog(this);
             GetNextAlarm();
         }
-        void SetPlaerInvisible(object sender, AxWMPLib._WMPOCXEvents_EndOfStreamEvent e)
+        void SetPlayerInvisible(object sender, AxWMPLib._WMPOCXEvents_EndOfStreamEvent e)
         {
             axWindowsMediaPlayer.Visible = false;
+        }
+        void SetPlayerInvisible(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
+        {
+            if(axWindowsMediaPlayer.playState == WMPLib.WMPPlayState.wmppsPaused)
+                axWindowsMediaPlayer.Visible = false;
         }
         [DllImport("kernel32.dll")]
         static extern bool AllocConsole();

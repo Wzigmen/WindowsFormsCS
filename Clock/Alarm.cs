@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,13 @@ namespace Clock
         public DateTime Date { get; set; }
         public DateTime Time { get; set; }
         public bool[] WeekDays {  get; private set; }
-        public string FileName { get; set; } = "";
+        public string filename;
+        public string FileName
+        {
+            set => filename = value;
+            get => System.IO.File.Exists(filename) ? filename : Path.GetFullPath(DEFAULT_ALARM_FILE);
+        }
+        static readonly string DEFAULT_ALARM_FILE = "..\\Sound\\AaaaAAaAAaaAAaa.mp3";
         public Alarm()
         {
             WeekDays = new bool[7];
@@ -76,7 +83,7 @@ namespace Clock
         }
         public int CompareTo(object other)
         {
-            return this.Time.CompareTo((other as Alarm).Time);
+            return this.Time.TimeOfDay.CompareTo((other as Alarm).Time.TimeOfDay);
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Clock
 
         private void buttonDeletAlarms_Click(object sender, EventArgs e)
         {
-            this.listBoxAlarms.Items.Clear();
+            listBoxAlarms.Items.Remove(listBoxAlarms.SelectedItem);
         }
 
         private void listBoxAlarms_DoubleClick(object sender, EventArgs e)
